@@ -1,0 +1,56 @@
+syntax = "proto3";
+
+package example;
+option go_package = "github.com/tandatle266/gotel/proto";
+
+// Example service for demonstrating tracing
+service ExampleService {
+  // Simple greeting method
+  rpc SayHello(HelloRequest) returns (HelloResponse);
+  
+  // Method that makes database calls
+  rpc GetUser(GetUserRequest) returns (GetUserResponse);
+  
+  // Method that uses cache
+  rpc GetCachedData(CacheRequest) returns (CacheResponse);
+  
+  // Method that demonstrates error handling
+  rpc FailSometimes(FailRequest) returns (FailResponse);
+}
+
+message HelloRequest {
+  string name = 1;
+}
+
+message HelloResponse {
+  string message = 1;
+  string timestamp = 2;
+}
+
+message GetUserRequest {
+  int64 user_id = 1;
+}
+
+message GetUserResponse {
+  int64 id = 1;
+  string name = 2;
+  string email = 3;
+  string created_at = 4;
+}
+
+message CacheRequest {
+  string key = 1;
+}
+
+message CacheResponse {
+  string value = 1;
+  bool cache_hit = 2;
+}
+
+message FailRequest {
+  float fail_rate = 1; // 0.0 to 1.0
+}
+
+message FailResponse {
+  string result = 1;
+}
