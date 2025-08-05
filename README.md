@@ -86,7 +86,7 @@ redisOptions := &redis.Options{
     DB:       cfg.RedisDB,
 }
 
-redisClient := oteltracingredis.NewClient(redisOptions, "servcer-service")
+redisClient := oteltracingredis.NewClient(redisOptions, "server-service")
 defer redisClient.Close()
 
 // Use redisClient.Client() for normal Redis commands
