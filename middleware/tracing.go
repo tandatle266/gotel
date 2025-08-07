@@ -1,4 +1,4 @@
-package oteltracingginmiddleware
+package middleware
 
 import (
 	"fmt"
@@ -12,7 +12,7 @@ import (
 	"go.opentelemetry.io/otel/trace"
 )
 
-func Middleware(serviceName string) gin.HandlerFunc {
+func GinMiddleware(serviceName string) gin.HandlerFunc {
 	mw := otelgin.Middleware(serviceName,
 		otelgin.WithTracerProvider(otel.GetTracerProvider()),
 		otelgin.WithSpanStartOptions(
@@ -35,4 +35,8 @@ func Middleware(serviceName string) gin.HandlerFunc {
 			span.SetAttributes(attribute.Int("http.status_code", c.Writer.Status()))
 		}
 	}
+}
+
+func InstrumentGinEngine(engine *gin.Engine, serviceName string) {
+    engine.Use(otelgin.Middleware(serviceName))
 }

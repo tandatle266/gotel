@@ -1,4 +1,4 @@
-package oteltracinggrpc
+package grpc
 
 import (
 	"go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc"
@@ -22,4 +22,19 @@ func NewClientWithTracing[T any](addr string, factory ClientFactory[T]) (client 
 
     client = factory(conn)
     return client, conn, nil
+}
+
+func InstrumentGRPCServerOptions(opts ...grpc.ServerOption) []grpc.ServerOption {
+    newOpts := make([]grpc.ServerOption, 0, len(opts)+1)
+    newOpts = append(newOpts, grpc.StatsHandler(otelgrpc.NewServerHandler()))
+    newOpts = append(newOpts, opts...)
+    return newOpts
+}
+
+
+func InstrumentGRPCDialOptions(opts ...grpc.DialOption) []grpc.DialOption {
+    newOpts := make([]grpc.DialOption, 0, len(opts)+1)
+    newOpts = append(newOpts, grpc.WithStatsHandler(otelgrpc.NewClientHandler()))
+    newOpts = append(newOpts, opts...)
+    return newOpts
 }
