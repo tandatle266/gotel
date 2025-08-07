@@ -39,6 +39,10 @@ func InstrumentGRPCDialOptions(opts ...grpc.DialOption) []grpc.DialOption {
     return newOpts
 }
 
-func StatsHandlerOption() grpc.ServerOption {
+func StatsHandlerDialOption() grpc.DialOption {
+    return grpc.WithStatsHandler(otelgrpc.NewClientHandler())
+}
+
+func StatsHandlerServerOption() grpc.ServerOption {
     return grpc.StatsHandler(otelgrpc.NewServerHandler())
 }
